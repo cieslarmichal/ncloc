@@ -1,5 +1,8 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import { CountLinesOfCodeCommandHandler } from './countLinesOfCodeCommandHandler';
+
+const commandHandler = new CountLinesOfCodeCommandHandler();
 
 yargs(hideBin(process.argv))
   .command(
@@ -7,17 +10,25 @@ yargs(hideBin(process.argv))
     'Count lines of code in given file/directory.',
     () => {},
     (argv) => {
-      const input = argv['i'] as string;
+      const inputPath = argv['i'] as string;
 
-      const exclude = argv['e'] as string;
+      const excludePaths = argv['e'] as string[];
 
-      console.log();
+      console.log(inputPath);
+      console.log(excludePaths);
+
+      commandHandler.execute({ inputPath, excludePaths });
     },
   )
-  .option('i', { alias: 'input', describe: 'Directory/file to count lines in', type: 'string', demandOption: true })
+  .option('i', {
+    alias: 'input',
+    describe: 'Directory/file path to count lines in',
+    type: 'string',
+    demandOption: true,
+  })
   .option('e', {
     alias: 'exclude',
-    describe: 'Directories/files to be excluded from counting',
+    describe: 'Directories/files paths to be excluded from counting',
     type: 'array',
     demandOption: false,
   })
