@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "author": "Michal Cieslar",
   "type": "module",
-  "main": "src/index.js",
+  "main": "src/index.ts",
+  "bin": {
+    "ncloc": "./dist/index.js"
+  },
+  "keywords": ["cli"],
+  "preferGlobal": true,
   "scripts": {
-    "start": "node --experimental-specifier-resolution=node --loader ts-node/esm src/index.ts",
+    "start": "node --loader ts-node/esm src/index.ts -i",
     "build:clean": "rimraf dist",
     "build": "tsc --build tsconfig.json",
     "test:unit": "vitest .unit.test.ts --threads false",
@@ -18,7 +23,8 @@
     "@types/yargs": "^17.0.24",
     "cli-table": "^0.3.11",
     "tslib": "^2.6.0",
-    "yargs": "^17.7.2"
+    "yargs": "^17.7.2",
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
