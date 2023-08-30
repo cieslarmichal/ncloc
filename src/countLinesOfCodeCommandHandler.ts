@@ -28,12 +28,26 @@ export class CountLinesOfCodeCommandHandler {
       }
     });
 
-    let files: string[];
+    let filesPaths: string[];
 
     if (this.fileSystemService.checkIfPathIsDirectory({ path: inputPath })) {
-      files = await this.fileSystemService.getAllFilesFromDirectory({ directoryPath: inputPath });
+      filesPaths = await this.fileSystemService.getAllFilesFromDirectory({ directoryPath: inputPath });
     } else {
-      files = [inputPath];
+      filesPaths = [inputPath];
     }
+
+    const filteredFilePaths = filesPaths.filter((filePath) =>
+      excludePaths.find((excludePath) => filePath.includes(excludePath)),
+    );
+
+    const filePathsToNumberOfLinesMapping = await Promise.all(
+      filteredFilePaths.map(async (filePath) => {
+        const fileContent = await this.fileSystemService.readFile({ filePath });
+
+        const numberOfLines = fileContent.split('\n').length;
+
+        return { filePath, numberOfLines };
+      }),
+    );
   }
 }

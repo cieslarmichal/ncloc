@@ -3,9 +3,10 @@ import {
   CheckIfPathIsDirectoryPayload,
   FileSystemService,
   GetAllFilesFromDirectoryPayload,
+  ReadFilePayload,
 } from './fileSystemService';
 import { existsSync, lstatSync } from 'fs';
-import { readdir } from 'node:fs/promises';
+import { readdir, readFile as readFileAsync } from 'node:fs/promises';
 
 export class FileSystemServiceImpl implements FileSystemService {
   public checkIfPathIsDirectory(payload: CheckIfPathIsDirectoryPayload): boolean {
@@ -26,5 +27,13 @@ export class FileSystemServiceImpl implements FileSystemService {
     const files = await readdir(directoryPath, { recursive: true });
 
     return files;
+  }
+
+  public async readFile(payload: ReadFilePayload): Promise<string> {
+    const { filePath } = payload;
+
+    const content = await readFileAsync(filePath, 'utf-8');
+
+    return content.toString();
   }
 }
