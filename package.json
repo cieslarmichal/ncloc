@@ -14,7 +14,9 @@
     "test:integration:watch": "npm run test:integration -- --watch"
   },
   "dependencies": {
+    "@types/cli-table": "^0.3.1",
     "@types/yargs": "^17.0.24",
+    "cli-table": "^0.3.11",
     "tslib": "^2.6.0",
     "yargs": "^17.7.2"
   },
