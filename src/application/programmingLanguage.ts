@@ -6,4 +6,7 @@ export enum ProgrammingLanguage {
   python = 'Python',
   java = 'Java',
   go = 'Go',
+  php = 'PHP',
+  rust = 'Rust',
+  ruby = 'Ruby',
 }

@@ -23,7 +23,7 @@
     "@types/yargs": "^17.0.24",
     "cli-table": "^0.3.11",
     "tslib": "^2.6.0",
-    "yargs": "^17.7.2",
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",

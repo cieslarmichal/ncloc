@@ -3,7 +3,7 @@ import { ProgrammingLanguage } from "../../programmingLanguage";
 import { ProgrammingLanguageMapper, MapFromFileExtensionPayload } from "./programmingLanguageMapper";
 
 export class ProgrammingLanguageMapperImpl implements ProgrammingLanguageMapper {
-  readonly fileExtensionToProgrammingLanguageMapping = new Map<string, ProgrammingLanguage>([
+  private readonly fileExtensionToProgrammingLanguageMapping = new Map<string, ProgrammingLanguage>([
     [".h", ProgrammingLanguage.cpp],
     [".hpp", ProgrammingLanguage.cpp],
     [".cpp", ProgrammingLanguage.cpp],
@@ -13,6 +13,9 @@ export class ProgrammingLanguageMapperImpl implements ProgrammingLanguageMapper 
     [".cs", ProgrammingLanguage.csharp],
     [".js", ProgrammingLanguage.javascript],
     [".ts", ProgrammingLanguage.typescript],
+    [".php", ProgrammingLanguage.php],
+    [".rs", ProgrammingLanguage.rust],
+    [".rb", ProgrammingLanguage.ruby],
   ]);
 
   public mapFromFileExtension(payload: MapFromFileExtensionPayload): ProgrammingLanguage {

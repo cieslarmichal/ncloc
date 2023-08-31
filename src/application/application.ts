@@ -1,33 +1,42 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import { CountLinesOfCodeCommandHandler } from './commandHandlers/countLinesOfCodeCommandHandler/countLinesOfCodeCommandHandler';
+import { FileSystemServiceImpl } from '../libs/fileSystem/fileSystemServiceImpl';
+import { ProgrammingLanguageMapperImpl } from './mappers/programmingLanguageMapper/programmingLanguageMapperImpl';
 
 export class Application {
-  public start() : void {
+  public start(): void {
     yargs(hideBin(process.argv))
-  .command(
-    '$0',
-    'Count lines of code in given file/directory.',
-    () => {},
-    (argv) => {
-      const inputPath = argv['i'] as string;
+      .command(
+        '$0',
+        'Count lines of code in given file/directory.',
+        () => {},
+        (argv) => {
+          const inputPath = argv['i'] as string;
 
-      const excludePaths = argv['e'] as string[];
+          const excludePaths = argv['e'] as string[];
 
-      commandHandler.execute({ inputPath, excludePaths });
-    },
-  )
-  .option('i', {
-    alias: 'input',
-    describe: 'Directory/file path to count lines in',
-    type: 'string',
-    demandOption: true,
-  })
-  .option('e', {
-    alias: 'exclude',
-    describe: 'Directories/files paths to be excluded from counting',
-    type: 'array',
-    demandOption: false,
-  })
-  .help(true).argv;
+          const fileSystemService = new FileSystemServiceImpl();
+
+          const programmingLanguageMapper = new ProgrammingLanguageMapperImpl();
+
+          const commandHandler = new CountLinesOfCodeCommandHandler(fileSystemService, programmingLanguageMapper);
+
+          commandHandler.execute({ inputPath, excludePaths });
+        },
+      )
+      .option('i', {
+        alias: 'input',
+        describe: 'Directory/file path to count lines in',
+        type: 'string',
+        demandOption: true,
+      })
+      .option('e', {
+        alias: 'exclude',
+        describe: 'Directories/files paths to be excluded from counting',
+        type: 'array',
+        demandOption: false,
+      })
+      .help(true).argv;
   }
 }

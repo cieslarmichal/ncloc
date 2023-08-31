@@ -1,8 +1,9 @@
-import { ExcludePathNotExistsError } from './application/errors/excludePathNotExistsError';
-import { InputPathNotExistsError } from './application/errors/inputPathNotExistsError';
-import { FileSystemService } from './fileSystem/fileSystemService';
-import { ProgrammingLanguage } from './programmingLanguage';
 import { extname } from 'path';
+import { FileSystemService } from '../../../libs/fileSystem/fileSystemService';
+import { ExcludePathNotExistsError } from '../../errors/excludePathNotExistsError';
+import { InputPathNotExistsError } from '../../errors/inputPathNotExistsError';
+import { ProgrammingLanguage } from '../../programmingLanguage';
+import { ProgrammingLanguageMapper } from '../../mappers/programmingLanguageMapper/programmingLanguageMapper';
 
 export interface CreateAddressCommandHandlerPayload {
   inputPath: string;
@@ -27,8 +28,10 @@ export interface SumNumberOfLinesByFileExtensionsPayload {
 }
 
 export class CountLinesOfCodeCommandHandler {
-
-  public constructor(private readonly fileSystemService: FileSystemService) {}
+  public constructor(
+    private readonly fileSystemService: FileSystemService,
+    private readonly programmingLanguageMapper: ProgrammingLanguageMapper,
+  ) {}
 
   public async execute(payload: CreateAddressCommandHandlerPayload): Promise<CreateAddressCommandHandlerResult> {
     const { inputPath, excludePaths } = payload;
@@ -44,6 +47,18 @@ export class CountLinesOfCodeCommandHandler {
     const fileExtensionsToNumberOfLinesMapping = await this.sumNumberOfLinesByFileExtensions({
       filesPaths: filteredFilePaths,
     });
+
+    const programmingLanguageToNumberOfLinesMapping = new Map<ProgrammingLanguage, number>();
+
+    fileExtensionsToNumberOfLinesMapping.forEach((numberOfLines, fileExtension) => {
+      const programmingLanguage = this.programmingLanguageMapper.mapFromFileExtension({ fileExtension });
+
+      const currentNumberOfLines = programmingLanguageToNumberOfLinesMapping.get(programmingLanguage) ?? 0;
+
+      programmingLanguageToNumberOfLinesMapping.set(programmingLanguage, currentNumberOfLines + numberOfLines);
+    });
+
+    return { programmingLanguagesToNumberOfLines: programmingLanguageToNumberOfLinesMapping };
   }
 
   private validateIfPathsExist(payload: ValidateIfPathsExistPayload): void {
@@ -94,9 +109,9 @@ export class CountLinesOfCodeCommandHandler {
     const fileExtensionsToNumberOfLinesSumMapping = new Map<string, number>();
 
     fileExtensionsToNumberOfLinesMapping.forEach(({ fileExtension, numberOfLines }) => {
-      const currentNumberofLines = fileExtensionsToNumberOfLinesSumMapping.get(fileExtension) ?? 0;
+      const currentNumberOfLines = fileExtensionsToNumberOfLinesSumMapping.get(fileExtension) ?? 0;
 
-      fileExtensionsToNumberOfLinesSumMapping.set(fileExtension, currentNumberofLines + numberOfLines);
+      fileExtensionsToNumberOfLinesSumMapping.set(fileExtension, currentNumberOfLines + numberOfLines);
     });
 
     return fileExtensionsToNumberOfLinesSumMapping;
