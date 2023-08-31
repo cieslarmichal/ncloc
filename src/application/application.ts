@@ -1,8 +1,8 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { CountLinesOfCodeCommandHandler } from './commandHandlers/countLinesOfCodeCommandHandler/countLinesOfCodeCommandHandler';
 import { FileSystemServiceImpl } from '../libs/fileSystem/fileSystemServiceImpl';
 import { ProgrammingLanguageMapperImpl } from './mappers/programmingLanguageMapper/programmingLanguageMapperImpl';
+import { CountLinesOfCodeCommandHandlerImpl } from './commandHandlers/countLinesOfCodeCommandHandler/countLinesOfCodeCommandHandlerImpl';
 
 export class Application {
   public start(): void {
@@ -11,7 +11,7 @@ export class Application {
         '$0',
         'Count lines of code in given file/directory.',
         () => {},
-        (argv) => {
+        async (argv) => {
           const inputPath = argv['i'] as string;
 
           const excludePaths = argv['e'] as string[];
@@ -20,9 +20,9 @@ export class Application {
 
           const programmingLanguageMapper = new ProgrammingLanguageMapperImpl();
 
-          const commandHandler = new CountLinesOfCodeCommandHandler(fileSystemService, programmingLanguageMapper);
+          const commandHandler = new CountLinesOfCodeCommandHandlerImpl(fileSystemService, programmingLanguageMapper);
 
-          commandHandler.execute({ inputPath, excludePaths });
+          await commandHandler.execute({ inputPath, excludePaths });
         },
       )
       .option('i', {

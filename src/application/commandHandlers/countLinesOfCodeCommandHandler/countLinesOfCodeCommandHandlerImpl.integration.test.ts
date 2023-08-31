@@ -1,82 +1,81 @@
-import { describe, it, expect } from 'vitest';
-import { ProgrammingLanguageMapperImpl } from './programmingLanguageMapperImpl';
+import { describe, it, expect, beforeAll } from 'vitest';
+import { FileSystemServiceImpl } from '../../../libs/fileSystem/fileSystemServiceImpl';
+import { ProgrammingLanguageMapperImpl } from '../../mappers/programmingLanguageMapper/programmingLanguageMapperImpl';
+import { CountLinesOfCodeCommandHandlerImpl } from './countLinesOfCodeCommandHandlerImpl';
+import { ExcludePathNotExistsError } from '../../errors/excludePathNotExistsError';
+import { InputPathNotExistsError } from '../../errors/inputPathNotExistsError';
+import { join } from 'path';
 import { ProgrammingLanguage } from '../../programmingLanguage';
-import { ProgrammingLanguageNotFound } from '../../errors/programmingLanguageNotFound';
 
+describe('CountLinesOfCodeCommandHandlerImpl', () => {
+  const fileSystemService = new FileSystemServiceImpl();
 
-describe('ProgrammingLanguageMapperImpl', () => {
   const programmingLanguageMapper = new ProgrammingLanguageMapperImpl();
 
-  it('maps file extension to C++ programming language', () => {
-    const result1 = programmingLanguageMapper.mapFromFileExtension({fileExtension: '.h'});
-    const result2 = programmingLanguageMapper.mapFromFileExtension({fileExtension: '.hpp'});
-    const result3 = programmingLanguageMapper.mapFromFileExtension({fileExtension: '.cpp'});
+  const countLinesOfCodeCommandHandler = new CountLinesOfCodeCommandHandlerImpl(
+    fileSystemService,
+    programmingLanguageMapper,
+  );
 
-    expect(result1).toEqual(ProgrammingLanguage.cpp);
-    expect(result2).toEqual(ProgrammingLanguage.cpp);
-    expect(result3).toEqual(ProgrammingLanguage.cpp);
+  const testDataDirectory = join(__dirname, '..', '..', '..', 'tests', 'data');
+
+  beforeAll(() => {
+    console.log({ testDataDirectory });
   });
 
+  it('returns lines of code by programming languages without excluded paths', async () => {
+    const { programmingLanguagesToNumberOfLines } = await countLinesOfCodeCommandHandler.execute({
+      inputPath: testDataDirectory,
+      excludePaths: [],
+    });
 
-  it('maps file extension to C# programming language', () => {
-    const result = programmingLanguageMapper.mapFromFileExtension({fileExtension: '.cs'});
-
-    expect(result).toEqual(ProgrammingLanguage.csharp);
+    expect(programmingLanguagesToNumberOfLines.keys.length).toEqual(5);
+    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.cpp)).toEqual(8);
+    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.csharp)).toEqual(10);
+    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.go)).toEqual(6);
+    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.javascript)).toEqual(97);
+    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.python)).toEqual(4);
   });
 
-  it('maps file extension to Go programming language', () => {
-    const result = programmingLanguageMapper.mapFromFileExtension({fileExtension: '.go'});
+  it('returns lines of code by programming languages with excluded paths', async () => {
+    const excludePath1 = join(testDataDirectory, 'cpp');
 
-    expect(result).toEqual(ProgrammingLanguage.go);
+    const excludePath2 = join(testDataDirectory, 'csharp');
+
+    const excludePaths: string[] = [excludePath1, excludePath2];
+
+    const { programmingLanguagesToNumberOfLines } = await countLinesOfCodeCommandHandler.execute({
+      inputPath: testDataDirectory,
+      excludePaths,
+    });
+
+    expect(programmingLanguagesToNumberOfLines.keys.length).toEqual(3);
+    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.go)).toEqual(6);
+    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.javascript)).toEqual(97);
+    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.python)).toEqual(4);
   });
 
-  it('maps file extension to Java programming language', () => {
-    const result = programmingLanguageMapper.mapFromFileExtension({fileExtension: '.java'});
+  it('throws if provided input path does not exist', async () => {
+    const inputPath = 'invalid';
 
-    expect(result).toEqual(ProgrammingLanguage.java);
-  });
-
-  it('maps file extension to Javascript programming language', () => {
-    const result = programmingLanguageMapper.mapFromFileExtension({fileExtension: '.js'});
-
-    expect(result).toEqual(ProgrammingLanguage.javascript);
-  });
-
-  it('maps file extension to Typescript programming language', () => {
-    const result = programmingLanguageMapper.mapFromFileExtension({fileExtension: '.ts'});
-
-    expect(result).toEqual(ProgrammingLanguage.typescript);
-  });
-
-  it('maps file extension to Python programming language', () => {
-    const result = programmingLanguageMapper.mapFromFileExtension({fileExtension: '.py'});
-
-    expect(result).toEqual(ProgrammingLanguage.python);
-  });
-
-  it('maps file extension to PHP programming language', () => {
-    const result = programmingLanguageMapper.mapFromFileExtension({fileExtension: '.php'});
-
-    expect(result).toEqual(ProgrammingLanguage.php);
-  });
-
-  it('maps file extension to Rust programming language', () => {
-    const result = programmingLanguageMapper.mapFromFileExtension({fileExtension: '.rs'});
-
-    expect(result).toEqual(ProgrammingLanguage.rust);
-  });
-
-  it('maps file extension to Ruby programming language', () => {
-    const result = programmingLanguageMapper.mapFromFileExtension({fileExtension: '.rb'});
-
-    expect(result).toEqual(ProgrammingLanguage.ruby);
-  });
-
-  it('throws an error when programming language mapping not found', () => {
     try {
-      programmingLanguageMapper.mapFromFileExtension({fileExtension: '.px'});
+      await countLinesOfCodeCommandHandler.execute({ inputPath, excludePaths: [] });
     } catch (error) {
-      expect(error).toBeInstanceOf(ProgrammingLanguageNotFound);
+      expect(error).toBeInstanceOf(InputPathNotExistsError);
+
+      return;
+    }
+
+    expect.fail();
+  });
+
+  it('throws if provided exclude path does not exist', async () => {
+    const excludePaths: string[] = ['invalid'];
+
+    try {
+      await countLinesOfCodeCommandHandler.execute({ inputPath: testDataDirectory, excludePaths });
+    } catch (error) {
+      expect(error).toBeInstanceOf(ExcludePathNotExistsError);
 
       return;
     }
