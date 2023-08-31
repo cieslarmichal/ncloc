@@ -27,7 +27,6 @@ export interface SumNumberOfLinesByFileExtensionsPayload {
 }
 
 export class CountLinesOfCodeCommandHandler {
-  readonly fileExtensionToProgrammingLanguageMapping = new Map<string, ProgrammingLanguage>();
 
   public constructor(private readonly fileSystemService: FileSystemService) {}
 

@@ -13,9 +13,6 @@ export class Application {
 
       const excludePaths = argv['e'] as string[];
 
-      console.log(inputPath);
-      console.log(excludePaths);
-
       commandHandler.execute({ inputPath, excludePaths });
     },
   )
