@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { ProgrammingLanguageMapperImpl } from './programmingLanguageMapperImpl.js';
 import { ProgrammingLanguage } from '../../programmingLanguage.js';
-import { ProgrammingLanguageNotFound } from '../../errors/programmingLanguageNotFound.js';
 
 describe('ProgrammingLanguageMapperImpl', () => {
   const programmingLanguageMapper = new ProgrammingLanguageMapperImpl();
@@ -70,15 +69,9 @@ describe('ProgrammingLanguageMapperImpl', () => {
     expect(result).toEqual(ProgrammingLanguage.ruby);
   });
 
-  it('throws an error when programming language mapping not found', () => {
-    try {
-      programmingLanguageMapper.mapFromFileExtension({ fileExtension: '.px' });
-    } catch (error) {
-      expect(error).toBeInstanceOf(ProgrammingLanguageNotFound);
+  it('returns undefined when programming language mapping not found', () => {
+    const result = programmingLanguageMapper.mapFromFileExtension({ fileExtension: '.px' });
 
-      return;
-    }
-
-    expect.fail();
+    expect(result).toBeUndefined();
   });
 });

@@ -54,6 +54,10 @@ export class CountLinesOfCodeCommandHandlerImpl implements CountLinesOfCodeComma
     fileExtensionsAndNumberOfLines.forEach(([fileExtension, numberOfLines]) => {
       const programmingLanguage = this.programmingLanguageMapper.mapFromFileExtension({ fileExtension });
 
+      if (!programmingLanguage) {
+        return;
+      }
+
       const programmingLanguageFilesInfo = programmingLanguageToFilesInfo.get(programmingLanguage);
 
       const currentProgrammingLanguageFiles = programmingLanguageFilesInfo

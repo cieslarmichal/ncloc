@@ -5,5 +5,5 @@ export interface MapFromFileExtensionPayload {
 }
 
 export interface ProgrammingLanguageMapper {
-  mapFromFileExtension(payload: MapFromFileExtensionPayload): ProgrammingLanguage;
+  mapFromFileExtension(payload: MapFromFileExtensionPayload): ProgrammingLanguage | undefined;
 }

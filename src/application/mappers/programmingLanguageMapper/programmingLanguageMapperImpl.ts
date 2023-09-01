@@ -1,4 +1,3 @@
-import { ProgrammingLanguageNotFound } from '../../errors/programmingLanguageNotFound.js';
 import { ProgrammingLanguage } from '../../programmingLanguage.js';
 import { ProgrammingLanguageMapper, MapFromFileExtensionPayload } from './programmingLanguageMapper.js';
 
@@ -18,13 +17,13 @@ export class ProgrammingLanguageMapperImpl implements ProgrammingLanguageMapper 
     ['.rb', ProgrammingLanguage.ruby],
   ]);
 
-  public mapFromFileExtension(payload: MapFromFileExtensionPayload): ProgrammingLanguage {
+  public mapFromFileExtension(payload: MapFromFileExtensionPayload): ProgrammingLanguage | undefined {
     const { fileExtension } = payload;
 
     const programmingLanguage = this.fileExtensionToProgrammingLanguageMapping.get(fileExtension);
 
     if (!programmingLanguage) {
-      throw new ProgrammingLanguageNotFound({ fileExtension });
+      return undefined;
     }
 
     return programmingLanguage;
