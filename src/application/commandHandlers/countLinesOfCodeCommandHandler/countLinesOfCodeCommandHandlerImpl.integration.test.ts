@@ -25,12 +25,13 @@ describe('CountLinesOfCodeCommandHandlerImpl', () => {
       excludePaths: [],
     });
 
-    expect(programmingLanguagesToNumberOfLines.size).toEqual(5);
+    expect(programmingLanguagesToNumberOfLines.size).toEqual(6);
     expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.cpp)).toEqual(8);
     expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.csharp)).toEqual(10);
     expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.go)).toEqual(6);
-    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.javascript)).toEqual(97);
+    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.javascript)).toEqual(32);
     expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.python)).toEqual(4);
+    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.java)).toEqual(16);
   });
 
   it('returns lines of code by programming languages with excluded paths', async () => {
@@ -38,17 +39,20 @@ describe('CountLinesOfCodeCommandHandlerImpl', () => {
 
     const excludePath2 = join(testDataDirectory, 'csharp');
 
-    const excludePaths: string[] = [excludePath1, excludePath2];
+    const excludePath3 = join(testDataDirectory, 'nested', 'javascript', 'example1.js');
+
+    const excludePaths: string[] = [excludePath1, excludePath2, excludePath3];
 
     const { programmingLanguagesToNumberOfLines } = await countLinesOfCodeCommandHandler.execute({
       inputPath: testDataDirectory,
       excludePaths,
     });
 
-    expect(programmingLanguagesToNumberOfLines.size).toEqual(3);
+    expect(programmingLanguagesToNumberOfLines.size).toEqual(4);
     expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.go)).toEqual(6);
-    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.javascript)).toEqual(97);
+    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.javascript)).toEqual(12);
     expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.python)).toEqual(4);
+    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.java)).toEqual(16);
   });
 
   it('throws if provided input path does not exist', async () => {
