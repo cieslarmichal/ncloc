@@ -1,6 +1,18 @@
 # NCloc
 
+<br />
+
 A cli written in Node.js inspired by [cloc](https://github.com/AlDanial/cloc) to count the lines of source code.
+
+<br />
+
+## Installation
+
+```
+npm i -g ncloc
+```
+
+<br />
 
 ## Basic example
 
@@ -28,6 +40,8 @@ $ ncloc -i /home/michal/repos/ncloc
 
 ```
 
+<br />
+
 ## Excluding directories
 
 ```
@@ -51,6 +65,8 @@ $ ncloc -i /home/michal/repos/ncloc -e /home/michal/repos/ncloc/node_modules
 ╚═══════════════════════╧══════════════════╧══════════════════╝
 
 ```
+
+<br />
 
 ## Flags
 
