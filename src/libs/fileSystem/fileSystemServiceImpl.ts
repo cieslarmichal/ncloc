@@ -5,7 +5,7 @@ import {
   FileSystemService,
   GetAllFilesFromDirectoryPayload,
   ReadFilePayload,
-} from './fileSystemService';
+} from './fileSystemService.js';
 import { existsSync, lstatSync } from 'fs';
 import { readdir, readFile as readFileAsync } from 'node:fs/promises';
 import { join } from 'path';

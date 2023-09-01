@@ -1,4 +1,4 @@
-import { ProgrammingLanguage } from '../../programmingLanguage';
+import { ProgrammingLanguage } from '../../programmingLanguage.js';
 
 export interface CreateAddressCommandHandlerPayload {
   inputPath: string;

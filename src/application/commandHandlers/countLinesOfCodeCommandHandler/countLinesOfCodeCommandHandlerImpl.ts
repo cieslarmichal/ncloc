@@ -1,14 +1,14 @@
 import { extname } from 'path';
-import { FileSystemService } from '../../../libs/fileSystem/fileSystemService';
-import { ExcludePathNotExistsError } from '../../errors/excludePathNotExistsError';
-import { InputPathNotExistsError } from '../../errors/inputPathNotExistsError';
-import { ProgrammingLanguage } from '../../programmingLanguage';
-import { ProgrammingLanguageMapper } from '../../mappers/programmingLanguageMapper/programmingLanguageMapper';
+import { FileSystemService } from '../../../libs/fileSystem/fileSystemService.js';
+import { ExcludePathNotExistsError } from '../../errors/excludePathNotExistsError.js';
+import { InputPathNotExistsError } from '../../errors/inputPathNotExistsError.js';
+import { ProgrammingLanguage } from '../../programmingLanguage.js';
+import { ProgrammingLanguageMapper } from '../../mappers/programmingLanguageMapper/programmingLanguageMapper.js';
 import {
   CountLinesOfCodeCommandHandler,
   CreateAddressCommandHandlerPayload,
   CreateAddressCommandHandlerResult,
-} from './countLinesOfCodeCommandHandler';
+} from './countLinesOfCodeCommandHandler.js';
 
 export interface ValidateIfPathsExistPayload {
   inputPath: string;
