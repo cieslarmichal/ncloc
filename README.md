@@ -52,13 +52,12 @@ $ ncloc -i /home/michal/repos/ncloc -e /home/michal/repos/ncloc/node_modules
 
 ```
 
-
 ## Flags
 
 ```
 Flags:
-  -i, --input    Directory/file path to count lines in
-  -e, --exclude  Directories/files paths to be excluded from counting
+  -i, --input    Directory/file absolute path to count lines in
+  -e, --exclude  Directories/files absolute paths to be excluded from counting
       --help     Show help
 ```
 
