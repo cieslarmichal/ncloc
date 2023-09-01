@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "author": "Michal Cieslar",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "dist/src/index.ts",
   "bin": {
-    "ncloc": "./dist/src/index.js"
+    "ncloc": "bin/ncloc.js"
   },
   "keywords": ["cli"],
   "preferGlobal": true,

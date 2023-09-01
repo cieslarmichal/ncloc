@@ -27,7 +27,25 @@ export class Application {
 
           const result = new Table({
             head: ['Programming language', 'Files', 'Lines of code'],
-            colWidths: [100, 200],
+            style: { head: ['green'] },
+            colWidths: [23, 18, 18],
+            chars: {
+              top: '═',
+              'top-mid': '╤',
+              'top-left': '╔',
+              'top-right': '╗',
+              bottom: '═',
+              'bottom-mid': '╧',
+              'bottom-left': '╚',
+              'bottom-right': '╝',
+              left: '║',
+              'left-mid': '╟',
+              mid: '─',
+              'mid-mid': '┼',
+              right: '║',
+              'right-mid': '╢',
+              middle: '│',
+            },
           });
 
           programmingLanguageToFilesInfo.forEach((filesInfo, programmingLanguage) => {
