@@ -8,6 +8,7 @@ import {
   CountLinesOfCodeCommandHandler,
   CreateAddressCommandHandlerPayload,
   CreateAddressCommandHandlerResult,
+  ProgrammingLanguageFilesInfo,
 } from './countLinesOfCodeCommandHandler.js';
 
 export interface ValidateIfPathsExistPayload {
@@ -17,10 +18,6 @@ export interface ValidateIfPathsExistPayload {
 
 export interface GetAllFilesPathsPayload {
   path: string;
-}
-
-export interface SumNumberOfLinesByFileExtensionsPayload {
-  filesPaths: string[];
 }
 
 export class CountLinesOfCodeCommandHandlerImpl implements CountLinesOfCodeCommandHandler {
@@ -34,27 +31,46 @@ export class CountLinesOfCodeCommandHandlerImpl implements CountLinesOfCodeComma
 
     this.validateIfPathsExist({ inputPath, excludePaths });
 
-    const filesPaths = await this.getAllFilesPaths({ path: inputPath });
+    const allFilesPaths = await this.getAllFilesPaths({ path: inputPath });
 
-    const filteredFilePaths = filesPaths.filter(
+    const filteredFilePaths = allFilesPaths.filter(
       (filePath) => excludePaths.find((excludePath) => filePath.includes(excludePath)) === undefined,
     );
 
-    const fileExtensionsToNumberOfLinesMapping = await this.sumNumberOfLinesByFileExtensions({
-      filesPaths: filteredFilePaths,
-    });
+    const fileExtensionsAndNumberOfLines: [string, number][] = await Promise.all(
+      filteredFilePaths.map(async (filePath) => {
+        const fileExtension = extname(filePath);
 
-    const programmingLanguageToNumberOfLinesMapping = new Map<ProgrammingLanguage, number>();
+        const fileContent = await this.fileSystemService.readFile({ filePath });
 
-    fileExtensionsToNumberOfLinesMapping.forEach((numberOfLines, fileExtension) => {
+        const fileContentLength = fileContent.split('\n').length;
+
+        return [fileExtension, fileContentLength];
+      }),
+    );
+
+    const programmingLanguageToFilesInfo = new Map<ProgrammingLanguage, ProgrammingLanguageFilesInfo>();
+
+    fileExtensionsAndNumberOfLines.forEach(([fileExtension, numberOfLines]) => {
       const programmingLanguage = this.programmingLanguageMapper.mapFromFileExtension({ fileExtension });
 
-      const currentNumberOfLines = programmingLanguageToNumberOfLinesMapping.get(programmingLanguage) ?? 0;
+      const programmingLanguageFilesInfo = programmingLanguageToFilesInfo.get(programmingLanguage);
 
-      programmingLanguageToNumberOfLinesMapping.set(programmingLanguage, currentNumberOfLines + numberOfLines);
+      const currentProgrammingLanguageFiles = programmingLanguageFilesInfo
+        ? programmingLanguageFilesInfo.numberOfFiles
+        : 0;
+
+      const currentProgrammingLanguageLines = programmingLanguageFilesInfo
+        ? programmingLanguageFilesInfo.numberOfLines
+        : 0;
+
+      programmingLanguageToFilesInfo.set(programmingLanguage, {
+        numberOfFiles: currentProgrammingLanguageFiles + 1,
+        numberOfLines: currentProgrammingLanguageLines + numberOfLines,
+      });
     });
 
-    return { programmingLanguagesToNumberOfLines: programmingLanguageToNumberOfLinesMapping };
+    return { programmingLanguageToFilesInfo };
   }
 
   private validateIfPathsExist(payload: ValidateIfPathsExistPayload): void {
@@ -83,29 +99,5 @@ export class CountLinesOfCodeCommandHandlerImpl implements CountLinesOfCodeComma
     }
 
     return filesPaths;
-  }
-
-  private async sumNumberOfLinesByFileExtensions(
-    payload: SumNumberOfLinesByFileExtensionsPayload,
-  ): Promise<Map<string, number>> {
-    const { filesPaths } = payload;
-
-    const fileExtensionsToNumberOfLinesMapping = new Map<string, number>();
-
-    await Promise.all(
-      filesPaths.map(async (filePath) => {
-        const fileExtension = extname(filePath);
-
-        const fileContent = await this.fileSystemService.readFile({ filePath });
-
-        const fileContentLength = fileContent.split('\n').length;
-
-        const currentNumberOfLines = fileExtensionsToNumberOfLinesMapping.get(fileExtension) ?? 0;
-
-        fileExtensionsToNumberOfLinesMapping.set(fileExtension, currentNumberOfLines + fileContentLength);
-      }),
-    );
-
-    return fileExtensionsToNumberOfLinesMapping;
   }
 }

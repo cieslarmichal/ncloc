@@ -20,18 +20,30 @@ describe('CountLinesOfCodeCommandHandlerImpl', () => {
   const testDataDirectory = join(__dirname, '..', '..', '..', 'tests', 'data');
 
   it('returns lines of code by programming languages without excluded paths', async () => {
-    const { programmingLanguagesToNumberOfLines } = await countLinesOfCodeCommandHandler.execute({
+    const { programmingLanguageToFilesInfo } = await countLinesOfCodeCommandHandler.execute({
       inputPath: testDataDirectory,
       excludePaths: [],
     });
 
-    expect(programmingLanguagesToNumberOfLines.size).toEqual(6);
-    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.cpp)).toEqual(8);
-    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.csharp)).toEqual(10);
-    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.go)).toEqual(6);
-    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.javascript)).toEqual(32);
-    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.python)).toEqual(4);
-    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.java)).toEqual(16);
+    expect(programmingLanguageToFilesInfo.size).toEqual(6);
+    expect(programmingLanguageToFilesInfo.get(ProgrammingLanguage.cpp)).toEqual({ numberOfFiles: 1, numberOfLines: 8 });
+    expect(programmingLanguageToFilesInfo.get(ProgrammingLanguage.csharp)).toEqual({
+      numberOfFiles: 1,
+      numberOfLines: 10,
+    });
+    expect(programmingLanguageToFilesInfo.get(ProgrammingLanguage.go)).toEqual({ numberOfFiles: 1, numberOfLines: 6 });
+    expect(programmingLanguageToFilesInfo.get(ProgrammingLanguage.javascript)).toEqual({
+      numberOfFiles: 2,
+      numberOfLines: 32,
+    });
+    expect(programmingLanguageToFilesInfo.get(ProgrammingLanguage.python)).toEqual({
+      numberOfFiles: 1,
+      numberOfLines: 4,
+    });
+    expect(programmingLanguageToFilesInfo.get(ProgrammingLanguage.java)).toEqual({
+      numberOfFiles: 1,
+      numberOfLines: 16,
+    });
   });
 
   it('returns lines of code by programming languages with excluded paths', async () => {
@@ -43,16 +55,25 @@ describe('CountLinesOfCodeCommandHandlerImpl', () => {
 
     const excludePaths: string[] = [excludePath1, excludePath2, excludePath3];
 
-    const { programmingLanguagesToNumberOfLines } = await countLinesOfCodeCommandHandler.execute({
+    const { programmingLanguageToFilesInfo } = await countLinesOfCodeCommandHandler.execute({
       inputPath: testDataDirectory,
       excludePaths,
     });
 
-    expect(programmingLanguagesToNumberOfLines.size).toEqual(4);
-    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.go)).toEqual(6);
-    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.javascript)).toEqual(12);
-    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.python)).toEqual(4);
-    expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.java)).toEqual(16);
+    expect(programmingLanguageToFilesInfo.size).toEqual(4);
+    expect(programmingLanguageToFilesInfo.get(ProgrammingLanguage.go)).toEqual({ numberOfFiles: 1, numberOfLines: 6 });
+    expect(programmingLanguageToFilesInfo.get(ProgrammingLanguage.javascript)).toEqual({
+      numberOfFiles: 1,
+      numberOfLines: 12,
+    });
+    expect(programmingLanguageToFilesInfo.get(ProgrammingLanguage.python)).toEqual({
+      numberOfFiles: 1,
+      numberOfLines: 4,
+    });
+    expect(programmingLanguageToFilesInfo.get(ProgrammingLanguage.java)).toEqual({
+      numberOfFiles: 1,
+      numberOfLines: 16,
+    });
   });
 
   it('throws if provided input path does not exist', async () => {

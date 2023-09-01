@@ -1,12 +1,17 @@
 import { ProgrammingLanguage } from '../../programmingLanguage.js';
 
+export interface ProgrammingLanguageFilesInfo {
+  numberOfFiles: number;
+  numberOfLines: number;
+}
+
 export interface CreateAddressCommandHandlerPayload {
   inputPath: string;
   excludePaths?: string[];
 }
 
 export interface CreateAddressCommandHandlerResult {
-  programmingLanguagesToNumberOfLines: Map<ProgrammingLanguage, number>;
+  programmingLanguageToFilesInfo: Map<ProgrammingLanguage, ProgrammingLanguageFilesInfo>;
 }
 
 export interface CountLinesOfCodeCommandHandler {

@@ -3,6 +3,7 @@ import { hideBin } from 'yargs/helpers';
 import { FileSystemServiceImpl } from '../libs/fileSystem/fileSystemServiceImpl.js';
 import { ProgrammingLanguageMapperImpl } from './mappers/programmingLanguageMapper/programmingLanguageMapperImpl.js';
 import { CountLinesOfCodeCommandHandlerImpl } from './commandHandlers/countLinesOfCodeCommandHandler/countLinesOfCodeCommandHandlerImpl.js';
+import Table from 'cli-table';
 
 export class Application {
   public start(): void {
@@ -22,7 +23,18 @@ export class Application {
 
           const commandHandler = new CountLinesOfCodeCommandHandlerImpl(fileSystemService, programmingLanguageMapper);
 
-          await commandHandler.execute({ inputPath, excludePaths });
+          const { programmingLanguageToFilesInfo } = await commandHandler.execute({ inputPath, excludePaths });
+
+          const result = new Table({
+            head: ['Programming language', 'Files', 'Lines of code'],
+            colWidths: [100, 200],
+          });
+
+          programmingLanguageToFilesInfo.forEach((filesInfo, programmingLanguage) => {
+            result.push([programmingLanguage, String(filesInfo.numberOfFiles), String(filesInfo.numberOfLines)]);
+          });
+
+          console.log(result.toString());
         },
       )
       .option('i', {
