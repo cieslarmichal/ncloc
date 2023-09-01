@@ -17,7 +17,7 @@ describe('CountLinesOfCodeCommandHandlerImpl', () => {
     programmingLanguageMapper,
   );
 
-  const testDataDirectory = join(__dirname, '..', '..', '..', 'tests', 'data');
+  const testDataDirectory = join(__dirname, '..', '..', '..', '..', 'tests', 'data');
 
   it('returns lines of code by programming languages without excluded paths', async () => {
     const { programmingLanguageToFilesInfo } = await countLinesOfCodeCommandHandler.execute({
