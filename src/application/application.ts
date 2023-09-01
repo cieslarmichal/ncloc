@@ -10,7 +10,7 @@ export class Application {
     yargs(hideBin(process.argv))
       .command(
         '$0',
-        'NCloc is a simple tool to count lines of code of many programming languages',
+        'Count lines of code in given file or directory.',
         () => {},
         async (argv) => {
           const inputPath = argv['i'] as string;
