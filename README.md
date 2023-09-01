@@ -1,7 +1,5 @@
 # NCloc
 
-<br />
-
 A cli written in Node.js inspired by [cloc](https://github.com/AlDanial/cloc) to count the lines of source code.
 
 <br />
