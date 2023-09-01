@@ -5,12 +5,11 @@
   "type": "module",
   "main": "src/index.ts",
   "bin": {
-    "ncloc": "./dist/index.js"
+    "ncloc": "./dist/src/index.js"
   },
   "keywords": ["cli"],
   "preferGlobal": true,
   "scripts": {
-    "start": "node --loader ts-node/esm src/index.ts -i",
     "build:clean": "rimraf dist",
     "build": "tsc --build tsconfig.json",
     "test:unit": "vitest .unit.test.ts --threads false",

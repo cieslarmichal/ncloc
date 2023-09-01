@@ -2,7 +2,7 @@ import { ProgrammingLanguage } from '../../programmingLanguage.js';
 
 export interface CreateAddressCommandHandlerPayload {
   inputPath: string;
-  excludePaths: string[];
+  excludePaths?: string[];
 }
 
 export interface CreateAddressCommandHandlerResult {

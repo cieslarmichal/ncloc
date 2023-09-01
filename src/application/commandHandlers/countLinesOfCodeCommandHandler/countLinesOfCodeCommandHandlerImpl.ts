@@ -30,7 +30,7 @@ export class CountLinesOfCodeCommandHandlerImpl implements CountLinesOfCodeComma
   ) {}
 
   public async execute(payload: CreateAddressCommandHandlerPayload): Promise<CreateAddressCommandHandlerResult> {
-    const { inputPath, excludePaths } = payload;
+    const { inputPath, excludePaths = [] } = payload;
 
     this.validateIfPathsExist({ inputPath, excludePaths });
 
