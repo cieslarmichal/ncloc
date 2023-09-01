@@ -1,14 +1,15 @@
 {
   "name": "ncloc",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Michal Cieslar",
   "type": "module",
   "main": "dist/src/index.ts",
   "bin": {
     "ncloc": "bin/ncloc.js"
   },
+  "files": ["bin", "dist"],
   "license": "MIT",
-  "keywords": ["cli", "count-lines", "programming-languages"],
+  "keywords": ["cli", "cloc", "count-lines", "programming-languages"],
   "preferGlobal": true,
   "scripts": {
     "build:clean": "rimraf dist",
