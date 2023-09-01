@@ -36,8 +36,8 @@ export class CountLinesOfCodeCommandHandlerImpl implements CountLinesOfCodeComma
 
     const filesPaths = await this.getAllFilesPaths({ path: inputPath });
 
-    const filteredFilePaths = filesPaths.filter((filePath) =>
-      excludePaths.find((excludePath) => filePath.includes(excludePath)),
+    const filteredFilePaths = filesPaths.filter(
+      (filePath) => excludePaths.find((excludePath) => filePath.includes(excludePath)) === undefined,
     );
 
     const fileExtensionsToNumberOfLinesMapping = await this.sumNumberOfLinesByFileExtensions({
@@ -90,26 +90,22 @@ export class CountLinesOfCodeCommandHandlerImpl implements CountLinesOfCodeComma
   ): Promise<Map<string, number>> {
     const { filesPaths } = payload;
 
-    const fileExtensionsToNumberOfLinesMapping = await Promise.all(
+    const fileExtensionsToNumberOfLinesMapping = new Map<string, number>();
+
+    await Promise.all(
       filesPaths.map(async (filePath) => {
         const fileExtension = extname(filePath);
 
         const fileContent = await this.fileSystemService.readFile({ filePath });
 
-        const numberOfLines = fileContent.split('\n').length;
+        const fileContentLength = fileContent.split('\n').length;
 
-        return { fileExtension, numberOfLines };
+        const currentNumberOfLines = fileExtensionsToNumberOfLinesMapping.get(fileExtension) ?? 0;
+
+        fileExtensionsToNumberOfLinesMapping.set(fileExtension, currentNumberOfLines + fileContentLength);
       }),
     );
 
-    const fileExtensionsToNumberOfLinesSumMapping = new Map<string, number>();
-
-    fileExtensionsToNumberOfLinesMapping.forEach(({ fileExtension, numberOfLines }) => {
-      const currentNumberOfLines = fileExtensionsToNumberOfLinesSumMapping.get(fileExtension) ?? 0;
-
-      fileExtensionsToNumberOfLinesSumMapping.set(fileExtension, currentNumberOfLines + numberOfLines);
-    });
-
-    return fileExtensionsToNumberOfLinesSumMapping;
+    return fileExtensionsToNumberOfLinesMapping;
   }
 }

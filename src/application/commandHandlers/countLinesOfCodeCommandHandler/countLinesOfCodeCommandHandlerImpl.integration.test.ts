@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { FileSystemServiceImpl } from '../../../libs/fileSystem/fileSystemServiceImpl';
 import { ProgrammingLanguageMapperImpl } from '../../mappers/programmingLanguageMapper/programmingLanguageMapperImpl';
 import { CountLinesOfCodeCommandHandlerImpl } from './countLinesOfCodeCommandHandlerImpl';
@@ -19,17 +19,13 @@ describe('CountLinesOfCodeCommandHandlerImpl', () => {
 
   const testDataDirectory = join(__dirname, '..', '..', '..', 'tests', 'data');
 
-  beforeAll(() => {
-    console.log({ testDataDirectory });
-  });
-
   it('returns lines of code by programming languages without excluded paths', async () => {
     const { programmingLanguagesToNumberOfLines } = await countLinesOfCodeCommandHandler.execute({
       inputPath: testDataDirectory,
       excludePaths: [],
     });
 
-    expect(programmingLanguagesToNumberOfLines.keys.length).toEqual(5);
+    expect(programmingLanguagesToNumberOfLines.size).toEqual(5);
     expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.cpp)).toEqual(8);
     expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.csharp)).toEqual(10);
     expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.go)).toEqual(6);
@@ -49,7 +45,7 @@ describe('CountLinesOfCodeCommandHandlerImpl', () => {
       excludePaths,
     });
 
-    expect(programmingLanguagesToNumberOfLines.keys.length).toEqual(3);
+    expect(programmingLanguagesToNumberOfLines.size).toEqual(3);
     expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.go)).toEqual(6);
     expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.javascript)).toEqual(97);
     expect(programmingLanguagesToNumberOfLines.get(ProgrammingLanguage.python)).toEqual(4);
