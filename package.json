@@ -1,6 +1,6 @@
 {
   "name": "ncloc",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Michal Cieslar",
   "type": "module",
   "main": "dist/src/index.ts",
@@ -13,7 +13,8 @@
   "preferGlobal": true,
   "scripts": {
     "build:clean": "rimraf dist",
-    "build": "tsc --build tsconfig.json",
+    "build": "tsc --build tsconfig.build.json",
+    "build:dev": "tsc --build tsconfig.json",
     "test:unit": "vitest .unit.test.ts --threads false",
     "test:integration": "vitest .integration.test.ts --threads false"
   },
