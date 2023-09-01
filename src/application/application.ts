@@ -4,6 +4,7 @@ import { FileSystemServiceImpl } from '../libs/fileSystem/fileSystemServiceImpl.
 import { ProgrammingLanguageMapperImpl } from './mappers/programmingLanguageMapper/programmingLanguageMapperImpl.js';
 import { CountLinesOfCodeCommandHandlerImpl } from './commandHandlers/countLinesOfCodeCommandHandler/countLinesOfCodeCommandHandlerImpl.js';
 import Table from 'cli-table';
+import { BaseError } from './errors/baseError.js';
 
 export class Application {
   public start(): void {
@@ -23,7 +24,21 @@ export class Application {
 
           const commandHandler = new CountLinesOfCodeCommandHandlerImpl(fileSystemService, programmingLanguageMapper);
 
-          const { programmingLanguageToFilesInfo } = await commandHandler.execute({ inputPath, excludePaths });
+          let programmingLanguageToFilesInfo;
+
+          try {
+            const result = await commandHandler.execute({ inputPath, excludePaths });
+
+            programmingLanguageToFilesInfo = result.programmingLanguageToFilesInfo;
+          } catch (error) {
+            if (error instanceof BaseError) {
+              console.error({ errorMessage: error.message, errorContext: error.context });
+            } else {
+              console.error({ error });
+            }
+
+            return;
+          }
 
           const result = new Table({
             head: ['Programming language', 'Files', 'Lines of code'],
