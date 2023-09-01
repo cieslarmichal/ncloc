@@ -16,14 +16,13 @@
     "test:integration": "vitest .integration.test.ts --threads false"
   },
   "dependencies": {
-    "@types/cli-table": "^0.3.1",
-    "@types/yargs": "^17.0.24",
     "cli-table": "^0.3.11",
     "tslib": "^2.6.0",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.0.2",
+    "@types/yargs": "^17.0.24",
+    "@types/cli-table": "^0.3.1",
     "@types/node": "^20.4.1",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
