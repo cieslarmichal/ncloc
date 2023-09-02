@@ -35,11 +35,11 @@ export class Application {
         },
       )
       .command(
-        '',
+        '$0 <input>',
         'Count lines of code in given file or directory.',
         () => {},
         async (argv) => {
-          const inputPath = argv['i'] as string;
+          const inputPath = argv['input'] as string;
 
           const excludePaths = argv['e'] as string[];
 
@@ -78,8 +78,7 @@ export class Application {
           console.log(result.toString());
         },
       )
-      .option('i', {
-        alias: 'input',
+      .positional('input', {
         describe: 'Directory/file absolute path to count lines in',
         type: 'string',
         demandOption: true,
