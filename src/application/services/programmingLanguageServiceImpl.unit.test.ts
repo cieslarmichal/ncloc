@@ -70,6 +70,38 @@ describe('ProgrammingLanguageServiceImpl', () => {
     expect(result?.programmingLanguageName).toEqual(ProgrammingLanguageName.ruby);
   });
 
+  it('finds Kotlin programming language by file extension', () => {
+    const result1 = programmingLanguageServiceImpl.findProgrammingLanguageByFileExtension({ fileExtension: '.kt' });
+    const result2 = programmingLanguageServiceImpl.findProgrammingLanguageByFileExtension({ fileExtension: '.kts' });
+
+    expect(result1?.programmingLanguageName).toEqual(ProgrammingLanguageName.kotlin);
+    expect(result2?.programmingLanguageName).toEqual(ProgrammingLanguageName.kotlin);
+  });
+
+  it('finds Swift programming language by file extension', () => {
+    const result = programmingLanguageServiceImpl.findProgrammingLanguageByFileExtension({ fileExtension: '.swift' });
+
+    expect(result?.programmingLanguageName).toEqual(ProgrammingLanguageName.swift);
+  });
+
+  it('finds R programming language by file extension', () => {
+    const result = programmingLanguageServiceImpl.findProgrammingLanguageByFileExtension({ fileExtension: '.r' });
+
+    expect(result?.programmingLanguageName).toEqual(ProgrammingLanguageName.r);
+  });
+
+  it('finds Scala programming language by file extension', () => {
+    const result = programmingLanguageServiceImpl.findProgrammingLanguageByFileExtension({ fileExtension: '.scala' });
+
+    expect(result?.programmingLanguageName).toEqual(ProgrammingLanguageName.scala);
+  });
+
+  it('finds Perl programming language by file extension', () => {
+    const result = programmingLanguageServiceImpl.findProgrammingLanguageByFileExtension({ fileExtension: '.pl' });
+
+    expect(result?.programmingLanguageName).toEqual(ProgrammingLanguageName.perl);
+  });
+
   it('returns null when programming language not found', () => {
     const result = programmingLanguageServiceImpl.findProgrammingLanguageByFileExtension({ fileExtension: '.px' });
 
