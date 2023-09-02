@@ -44,23 +44,6 @@ export class Application {
             head: ['Programming language', 'Files', 'Lines of code'],
             style: { head: ['green'] },
             colWidths: [23, 18, 18],
-            chars: {
-              top: '═',
-              'top-mid': '╤',
-              'top-left': '╔',
-              'top-right': '╗',
-              bottom: '═',
-              'bottom-mid': '╧',
-              'bottom-left': '╚',
-              'bottom-right': '╝',
-              left: '║',
-              'left-mid': '╟',
-              mid: '─',
-              'mid-mid': '┼',
-              right: '║',
-              'right-mid': '╢',
-              middle: '│',
-            },
           });
 
           programmingLanguageToFilesInfo.forEach((filesInfo, programmingLanguage) => {
