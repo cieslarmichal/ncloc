@@ -24,7 +24,7 @@ export class Application {
           const result = new Table({
             head: ['Programming language', 'Extensions'],
             style: { head: ['green'] },
-            colWidths: [23, 18],
+            colWidths: [23, 25],
           });
 
           programmingLanguages.map((programmingLanguage) => {
@@ -89,6 +89,6 @@ export class Application {
         type: 'array',
         demandOption: false,
       })
-      .help(true).argv;
+      .help().argv;
   }
 }
