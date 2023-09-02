@@ -1,12 +1,6 @@
-export enum ProgrammingLanguage {
-  cpp = 'C++',
-  csharp = 'C#',
-  javascript = 'Javascript',
-  typescript = 'Typescript',
-  python = 'Python',
-  java = 'Java',
-  go = 'Go',
-  php = 'PHP',
-  rust = 'Rust',
-  ruby = 'Ruby',
+import { ProgrammingLanguageName } from './programmingLanguageName.js';
+
+export interface ProgrammingLanguage {
+  readonly programmingLanguageName: ProgrammingLanguageName;
+  readonly fileExtensions: string[];
 }

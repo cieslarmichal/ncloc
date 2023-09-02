@@ -12,12 +12,12 @@ import {
 } from './countLinesOfCodeCommandHandler.js';
 
 export interface ValidateIfPathsExistPayload {
-  inputPath: string;
-  excludePaths: string[];
+  readonly inputPath: string;
+  readonly excludePaths: string[];
 }
 
 export interface GetAllFilesPathsPayload {
-  path: string;
+  readonly path: string;
 }
 
 export class CountLinesOfCodeCommandHandlerImpl implements CountLinesOfCodeCommandHandler {

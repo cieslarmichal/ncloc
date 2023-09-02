@@ -1,21 +1,21 @@
 export interface CheckIfPathIsDirectoryPayload {
-  path: string;
+  readonly path: string;
 }
 
 export interface CheckIfPathIsFilePayload {
-  path: string;
+  readonly path: string;
 }
 
 export interface CheckIfPathExistsPayload {
-  path: string;
+  readonly path: string;
 }
 
 export interface GetAllFilesFromDirectoryPayload {
-  directoryPath: string;
+  readonly directoryPath: string;
 }
 
 export interface ReadFilePayload {
-  filePath: string;
+  readonly filePath: string;
 }
 
 export interface FileSystemService {
