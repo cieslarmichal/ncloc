@@ -10,4 +10,5 @@ export enum ProgrammingLanguageName {
   rust = 'Rust',
   ruby = 'Ruby',
   kotlin = 'Kotlin',
+  swift = 'Swift',
 }
