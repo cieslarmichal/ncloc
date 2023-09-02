@@ -5,12 +5,37 @@ import { CountLinesOfCodeCommandHandlerImpl } from './commandHandlers/countLines
 import Table from 'cli-table';
 import { BaseError } from './errors/baseError.js';
 import { ProgrammingLanguageServiceImpl } from './services/programmingLanguageServiceImpl.js';
+import { FindSupportedProgrammingLanguagesQueryHandlerImpl } from './queryHandlers/findSupportedProgrammingLanguagesQueryHandler/findSupportedProgrammingLanguagesQueryHandlerImpl.js';
 
 export class Application {
   public start(): void {
     yargs(hideBin(process.argv))
       .command(
-        '$0',
+        'languages',
+        'Show supported languages.',
+        () => {},
+        async () => {
+          const programmingLanguageService = new ProgrammingLanguageServiceImpl();
+
+          const queryHandler = new FindSupportedProgrammingLanguagesQueryHandlerImpl(programmingLanguageService);
+
+          const { programmingLanguages } = queryHandler.execute();
+
+          const result = new Table({
+            head: ['Programming language', 'Extensions'],
+            style: { head: ['green'] },
+            colWidths: [23, 18],
+          });
+
+          programmingLanguages.map((programmingLanguage) => {
+            result.push([programmingLanguage.programmingLanguageName, programmingLanguage.fileExtensions.join(' ')]);
+          });
+
+          console.log(result.toString());
+        },
+      )
+      .command(
+        '',
         'Count lines of code in given file or directory.',
         () => {},
         async (argv) => {
