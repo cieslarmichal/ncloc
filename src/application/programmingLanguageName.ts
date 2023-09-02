@@ -9,4 +9,5 @@ export enum ProgrammingLanguageName {
   php = 'PHP',
   rust = 'Rust',
   ruby = 'Ruby',
+  kotlin = 'Kotlin',
 }

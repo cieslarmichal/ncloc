@@ -7,7 +7,7 @@ import {
 
 export class ProgrammingLanguageServiceImpl implements ProgrammingLanguageService {
   private readonly programmingLanguages: ProgrammingLanguage[] = [
-    { programmingLanguageName: ProgrammingLanguageName.cpp, fileExtensions: ['.h', '.hpp', '.cpp'] },
+    { programmingLanguageName: ProgrammingLanguageName.cpp, fileExtensions: ['.h', '.hpp', '.cpp', '.cc', '.hh'] },
     { programmingLanguageName: ProgrammingLanguageName.csharp, fileExtensions: ['.cs'] },
     { programmingLanguageName: ProgrammingLanguageName.python, fileExtensions: ['.py'] },
     { programmingLanguageName: ProgrammingLanguageName.java, fileExtensions: ['.java'] },
@@ -17,6 +17,7 @@ export class ProgrammingLanguageServiceImpl implements ProgrammingLanguageServic
     { programmingLanguageName: ProgrammingLanguageName.php, fileExtensions: ['.php'] },
     { programmingLanguageName: ProgrammingLanguageName.rust, fileExtensions: ['.rs'] },
     { programmingLanguageName: ProgrammingLanguageName.ruby, fileExtensions: ['.rb'] },
+    { programmingLanguageName: ProgrammingLanguageName.kotlin, fileExtensions: ['.kt', '.kts'] },
   ];
 
   private readonly fileExtensionToProgrammingLanguageMapping = new Map<string, ProgrammingLanguage>();
