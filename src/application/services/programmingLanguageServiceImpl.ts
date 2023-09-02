@@ -20,6 +20,7 @@ export class ProgrammingLanguageServiceImpl implements ProgrammingLanguageServic
     { programmingLanguageName: ProgrammingLanguageName.kotlin, fileExtensions: ['.kt', '.kts'] },
     { programmingLanguageName: ProgrammingLanguageName.swift, fileExtensions: ['.swift'] },
     { programmingLanguageName: ProgrammingLanguageName.r, fileExtensions: ['.r'] },
+    { programmingLanguageName: ProgrammingLanguageName.scala, fileExtensions: ['.scala'] },
   ];
 
   private readonly fileExtensionToProgrammingLanguageMapping = new Map<string, ProgrammingLanguage>();

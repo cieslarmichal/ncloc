@@ -12,4 +12,5 @@ export enum ProgrammingLanguageName {
   kotlin = 'Kotlin',
   swift = 'Swift',
   r = 'R',
+  scala = 'Scala',
 }
