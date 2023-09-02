@@ -110,7 +110,7 @@ describe('ProgrammingLanguageServiceImpl', () => {
 
   it('returns all programming languages', () => {
     const expectedProgrammingLanguages: ProgrammingLanguage[] = [
-      { programmingLanguageName: ProgrammingLanguageName.cpp, fileExtensions: ['.h', '.hpp', '.cpp'] },
+      { programmingLanguageName: ProgrammingLanguageName.cpp, fileExtensions: ['.h', '.hpp', '.cpp', '.cc', '.hh'] },
       { programmingLanguageName: ProgrammingLanguageName.csharp, fileExtensions: ['.cs'] },
       { programmingLanguageName: ProgrammingLanguageName.python, fileExtensions: ['.py'] },
       { programmingLanguageName: ProgrammingLanguageName.java, fileExtensions: ['.java'] },
@@ -120,6 +120,11 @@ describe('ProgrammingLanguageServiceImpl', () => {
       { programmingLanguageName: ProgrammingLanguageName.php, fileExtensions: ['.php'] },
       { programmingLanguageName: ProgrammingLanguageName.rust, fileExtensions: ['.rs'] },
       { programmingLanguageName: ProgrammingLanguageName.ruby, fileExtensions: ['.rb'] },
+      { programmingLanguageName: ProgrammingLanguageName.kotlin, fileExtensions: ['.kt', '.kts'] },
+      { programmingLanguageName: ProgrammingLanguageName.swift, fileExtensions: ['.swift'] },
+      { programmingLanguageName: ProgrammingLanguageName.r, fileExtensions: ['.r'] },
+      { programmingLanguageName: ProgrammingLanguageName.scala, fileExtensions: ['.scala'] },
+      { programmingLanguageName: ProgrammingLanguageName.perl, fileExtensions: ['.pl'] },
     ];
 
     const result = programmingLanguageServiceImpl.findAllProgrammingLanguages();
