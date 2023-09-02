@@ -1,6 +1,6 @@
 {
   "name": "ncloc",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "Michal Cieslar",
   "type": "module",
   "main": "dist/src/index.ts",
@@ -9,8 +9,7 @@
   },
   "files": ["bin", "dist"],
   "license": "MIT",
-  "keywords": ["cli", "cloc", "count-lines", "programming-languages"],
-  "preferGlobal": true,
+  "keywords": ["cli", "cloc", "count-lines", "count-lines-of-code", "programming-languages"],
   "scripts": {
     "build:clean": "rimraf dist",
     "build": "tsc --build tsconfig.build.json",
