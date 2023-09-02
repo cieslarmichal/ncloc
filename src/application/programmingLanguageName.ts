@@ -13,4 +13,5 @@ export enum ProgrammingLanguageName {
   swift = 'Swift',
   r = 'R',
   scala = 'Scala',
+  perl = 'Perl',
 }

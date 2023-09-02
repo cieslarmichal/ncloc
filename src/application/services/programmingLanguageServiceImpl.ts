@@ -21,6 +21,7 @@ export class ProgrammingLanguageServiceImpl implements ProgrammingLanguageServic
     { programmingLanguageName: ProgrammingLanguageName.swift, fileExtensions: ['.swift'] },
     { programmingLanguageName: ProgrammingLanguageName.r, fileExtensions: ['.r'] },
     { programmingLanguageName: ProgrammingLanguageName.scala, fileExtensions: ['.scala'] },
+    { programmingLanguageName: ProgrammingLanguageName.perl, fileExtensions: ['.pl'] },
   ];
 
   private readonly fileExtensionToProgrammingLanguageMapping = new Map<string, ProgrammingLanguage>();
