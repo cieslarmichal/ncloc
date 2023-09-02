@@ -1,4 +1,4 @@
-import { ProgrammingLanguage } from '../../programmingLanguage.js';
+import { ProgrammingLanguageName } from '../../programmingLanguageName.js';
 
 export interface ProgrammingLanguageFilesInfo {
   readonly numberOfFiles: number;
@@ -11,7 +11,7 @@ export interface CreateAddressCommandHandlerPayload {
 }
 
 export interface CreateAddressCommandHandlerResult {
-  readonly programmingLanguageToFilesInfo: Map<ProgrammingLanguage, ProgrammingLanguageFilesInfo>;
+  readonly programmingLanguageNamesToFilesInfo: Map<ProgrammingLanguageName, ProgrammingLanguageFilesInfo>;
 }
 
 export interface CountLinesOfCodeCommandHandler {

@@ -1,10 +1,10 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { FileSystemServiceImpl } from '../libs/fileSystem/fileSystemServiceImpl.js';
-import { ProgrammingLanguageMapperImpl } from './mappers/programmingLanguageMapper/programmingLanguageMapperImpl.js';
 import { CountLinesOfCodeCommandHandlerImpl } from './commandHandlers/countLinesOfCodeCommandHandler/countLinesOfCodeCommandHandlerImpl.js';
 import Table from 'cli-table';
 import { BaseError } from './errors/baseError.js';
+import { ProgrammingLanguageServiceImpl } from './services/programmingLanguageServiceImpl.js';
 
 export class Application {
   public start(): void {
@@ -20,16 +20,16 @@ export class Application {
 
           const fileSystemService = new FileSystemServiceImpl();
 
-          const programmingLanguageMapper = new ProgrammingLanguageMapperImpl();
+          const programmingLanguageService = new ProgrammingLanguageServiceImpl();
 
-          const commandHandler = new CountLinesOfCodeCommandHandlerImpl(fileSystemService, programmingLanguageMapper);
+          const commandHandler = new CountLinesOfCodeCommandHandlerImpl(fileSystemService, programmingLanguageService);
 
-          let programmingLanguageToFilesInfo;
+          let programmingLanguageNamesToFilesInfo;
 
           try {
             const result = await commandHandler.execute({ inputPath, excludePaths });
 
-            programmingLanguageToFilesInfo = result.programmingLanguageToFilesInfo;
+            programmingLanguageNamesToFilesInfo = result.programmingLanguageNamesToFilesInfo;
           } catch (error) {
             if (error instanceof BaseError) {
               console.error({ errorMessage: error.message, errorContext: error.context });
@@ -46,8 +46,8 @@ export class Application {
             colWidths: [23, 18, 18],
           });
 
-          programmingLanguageToFilesInfo.forEach((filesInfo, programmingLanguage) => {
-            result.push([programmingLanguage, String(filesInfo.numberOfFiles), String(filesInfo.numberOfLines)]);
+          programmingLanguageNamesToFilesInfo.forEach((filesInfo, programmingLanguageName) => {
+            result.push([programmingLanguageName, String(filesInfo.numberOfFiles), String(filesInfo.numberOfLines)]);
           });
 
           console.log(result.toString());

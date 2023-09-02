@@ -2,14 +2,14 @@ import { extname } from 'path';
 import { FileSystemService } from '../../../libs/fileSystem/fileSystemService.js';
 import { ExcludePathNotExistsError } from '../../errors/excludePathNotExistsError.js';
 import { InputPathNotExistsError } from '../../errors/inputPathNotExistsError.js';
-import { ProgrammingLanguage } from '../../programmingLanguage.js';
-import { ProgrammingLanguageMapper } from '../../mappers/programmingLanguageMapper/programmingLanguageMapper.js';
 import {
   CountLinesOfCodeCommandHandler,
   CreateAddressCommandHandlerPayload,
   CreateAddressCommandHandlerResult,
   ProgrammingLanguageFilesInfo,
 } from './countLinesOfCodeCommandHandler.js';
+import { ProgrammingLanguageService } from '../../services/programmingLanguageService.js';
+import { ProgrammingLanguageName } from '../../programmingLanguageName.js';
 
 export interface ValidateIfPathsExistPayload {
   readonly inputPath: string;
@@ -23,7 +23,7 @@ export interface GetAllFilesPathsPayload {
 export class CountLinesOfCodeCommandHandlerImpl implements CountLinesOfCodeCommandHandler {
   public constructor(
     private readonly fileSystemService: FileSystemService,
-    private readonly programmingLanguageMapper: ProgrammingLanguageMapper,
+    private readonly programmingLanguageService: ProgrammingLanguageService,
   ) {}
 
   public async execute(payload: CreateAddressCommandHandlerPayload): Promise<CreateAddressCommandHandlerResult> {
@@ -49,16 +49,20 @@ export class CountLinesOfCodeCommandHandlerImpl implements CountLinesOfCodeComma
       }),
     );
 
-    const programmingLanguageToFilesInfo = new Map<ProgrammingLanguage, ProgrammingLanguageFilesInfo>();
+    const programmingLanguageNamesToFilesInfo = new Map<ProgrammingLanguageName, ProgrammingLanguageFilesInfo>();
 
     fileExtensionsAndNumberOfLines.forEach(([fileExtension, numberOfLines]) => {
-      const programmingLanguage = this.programmingLanguageMapper.mapFromFileExtension({ fileExtension });
+      const programmingLanguage = this.programmingLanguageService.findProgrammingLanguageByFileExtension({
+        fileExtension,
+      });
 
       if (!programmingLanguage) {
         return;
       }
 
-      const programmingLanguageFilesInfo = programmingLanguageToFilesInfo.get(programmingLanguage);
+      const { programmingLanguageName } = programmingLanguage;
+
+      const programmingLanguageFilesInfo = programmingLanguageNamesToFilesInfo.get(programmingLanguageName);
 
       const currentProgrammingLanguageFiles = programmingLanguageFilesInfo
         ? programmingLanguageFilesInfo.numberOfFiles
@@ -68,13 +72,13 @@ export class CountLinesOfCodeCommandHandlerImpl implements CountLinesOfCodeComma
         ? programmingLanguageFilesInfo.numberOfLines
         : 0;
 
-      programmingLanguageToFilesInfo.set(programmingLanguage, {
+      programmingLanguageNamesToFilesInfo.set(programmingLanguageName, {
         numberOfFiles: currentProgrammingLanguageFiles + 1,
         numberOfLines: currentProgrammingLanguageLines + numberOfLines,
       });
     });
 
-    return { programmingLanguageToFilesInfo };
+    return { programmingLanguageNamesToFilesInfo };
   }
 
   private validateIfPathsExist(payload: ValidateIfPathsExistPayload): void {
