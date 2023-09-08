@@ -1,4 +1,4 @@
-import { extname } from 'path';
+import { extname, resolve } from 'path';
 import { FileSystemService } from '../../../libs/fileSystem/fileSystemService.js';
 import { ExcludePathNotExistsError } from '../../errors/excludePathNotExistsError.js';
 import { InputPathNotExistsError } from '../../errors/inputPathNotExistsError.js';
@@ -31,10 +31,13 @@ export class CountLinesOfCodeCommandHandlerImpl implements CountLinesOfCodeComma
 
     this.validateIfPathsExist({ inputPath, excludePaths });
 
-    const allFilesPaths = await this.getAllFilesPaths({ path: inputPath });
+    const absoluteInputPath = resolve(inputPath);
+    const absoluteExcludePaths = excludePaths.map((excludePath) => resolve(excludePath));
+
+    const allFilesPaths = await this.getAllFilesPaths({ path: absoluteInputPath });
 
     const filteredFilePaths = allFilesPaths.filter(
-      (filePath) => excludePaths.find((excludePath) => filePath.includes(excludePath)) === undefined,
+      (filePath) => absoluteExcludePaths.find((excludePath) => filePath.includes(excludePath)) === undefined,
     );
 
     const fileExtensionsAndNumberOfLines: [string, number][] = await Promise.all(
