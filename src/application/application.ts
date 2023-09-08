@@ -79,13 +79,13 @@ export class Application {
         },
       )
       .positional('input', {
-        describe: 'Directory/file absolute path to count lines in',
+        describe: 'Directory/file path to count lines in',
         type: 'string',
         demandOption: true,
       })
       .option('e', {
         alias: 'exclude',
-        describe: 'Directories/files absolute paths to be excluded from counting',
+        describe: 'Directories/files paths to be excluded from counting',
         type: 'array',
         demandOption: false,
       })

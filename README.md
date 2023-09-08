@@ -22,10 +22,10 @@ npm i -g ncloc
 ncloc <input>
 
 Positionals:
-  input  Directory/file absolute path to count lines in
+  input  Directory/file path to count lines in
 
 Flags:
-  -e, --exclude  Directories/files absolute paths to be excluded from counting
+  -e, --exclude  Directories/files paths to be excluded from counting
       --help     Show help
 ```
 
