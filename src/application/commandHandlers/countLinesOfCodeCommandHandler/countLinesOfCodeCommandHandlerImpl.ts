@@ -100,7 +100,7 @@ export class CountLinesOfCodeCommandHandlerImpl implements CountLinesOfCodeComma
 
     let filesPaths: string[];
 
-    if (this.fileSystemService.checkIfPathIsDirectory({ path })) {
+    if (await this.fileSystemService.checkIfPathIsDirectory({ path })) {
       filesPaths = await this.fileSystemService.getAllFilesFromDirectory({ directoryPath: path });
     } else {
       filesPaths = [path];

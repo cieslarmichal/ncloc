@@ -1,26 +1,21 @@
 import {
   CheckIfPathExistsPayload,
   CheckIfPathIsDirectoryPayload,
-  CheckIfPathIsFilePayload,
   FileSystemService,
   GetAllFilesFromDirectoryPayload,
   ReadFilePayload,
 } from './fileSystemService.js';
-import { existsSync, lstatSync } from 'fs';
-import { readdir, readFile as readFileAsync } from 'node:fs/promises';
+import { existsSync } from 'fs';
+import { readdir, readFile as readFileAsync, lstat } from 'node:fs/promises';
 import { join } from 'path';
 
 export class FileSystemServiceImpl implements FileSystemService {
-  public checkIfPathIsDirectory(payload: CheckIfPathIsDirectoryPayload): boolean {
+  public async checkIfPathIsDirectory(payload: CheckIfPathIsDirectoryPayload): Promise<boolean> {
     const { path } = payload;
 
-    return lstatSync(path).isDirectory();
-  }
+    const stats = await lstat(path);
 
-  public checkIfPathIsFile(payload: CheckIfPathIsFilePayload): boolean {
-    const { path } = payload;
-
-    return lstatSync(path).isFile();
+    return stats.isDirectory();
   }
 
   public checkIfPathExists(payload: CheckIfPathExistsPayload): boolean {
@@ -32,13 +27,27 @@ export class FileSystemServiceImpl implements FileSystemService {
   public async getAllFilesFromDirectory(payload: GetAllFilesFromDirectoryPayload): Promise<string[]> {
     const { directoryPath } = payload;
 
-    const relativePaths = await readdir(directoryPath, { recursive: true });
+    const allPaths: string[] = [];
 
-    const absolutePaths = relativePaths.map((relativePath) => join(directoryPath, relativePath));
+    await this.getAllFilesFromDirectoryHelper(directoryPath, allPaths);
 
-    const absoluteFilePaths = absolutePaths.filter((absolutePath) => this.checkIfPathIsFile({ path: absolutePath }));
+    return allPaths;
+  }
 
-    return absoluteFilePaths;
+  private async getAllFilesFromDirectoryHelper(directoryPath: string, allPaths: string[]): Promise<void> {
+    const relativePaths = await readdir(directoryPath);
+
+    await Promise.all(
+      relativePaths.map(async (relativePath) => {
+        const absolutePath = join(directoryPath, relativePath);
+
+        if (await this.checkIfPathIsDirectory({ path: absolutePath })) {
+          await this.getAllFilesFromDirectoryHelper(absolutePath, allPaths);
+        } else {
+          allPaths.push(absolutePath);
+        }
+      }),
+    );
   }
 
   public async readFile(payload: ReadFilePayload): Promise<string> {
