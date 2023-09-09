@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { FileSystemServiceImpl } from '../../../libs/fileSystem/fileSystemServiceImpl.js';
 import { CountLinesOfCodeCommandHandlerImpl } from './countLinesOfCodeCommandHandlerImpl.js';
 import { ExcludePathNotExistsError } from '../../errors/excludePathNotExistsError.js';
 import { InputPathNotExistsError } from '../../errors/inputPathNotExistsError.js';
 import { join } from 'path';
-import { ProgrammingLanguageServiceImpl } from '../../services/programmingLanguageServiceImpl.js';
 import { ProgrammingLanguageName } from '../../programmingLanguageName.js';
+import { FileSystemServiceImpl } from '../../services/fileSystemService/fileSystemServiceImpl.js';
+import { ProgrammingLanguageServiceImpl } from '../../services/programmingLanguageService/programmingLanguageServiceImpl.js';
 
 describe('CountLinesOfCodeCommandHandlerImpl', () => {
   const fileSystemService = new FileSystemServiceImpl();

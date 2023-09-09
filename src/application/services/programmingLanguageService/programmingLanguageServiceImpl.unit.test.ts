@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { ProgrammingLanguageName } from '../programmingLanguageName.js';
 import { ProgrammingLanguageServiceImpl } from './programmingLanguageServiceImpl.js';
-import { ProgrammingLanguage } from '../programmingLanguage.js';
+import { ProgrammingLanguage } from '../../programmingLanguage.js';
+import { ProgrammingLanguageName } from '../../programmingLanguageName.js';
 
 describe('ProgrammingLanguageServiceImpl', () => {
   const programmingLanguageServiceImpl = new ProgrammingLanguageServiceImpl();

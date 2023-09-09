@@ -1,4 +1,4 @@
-import { ProgrammingLanguage } from '../programmingLanguage.js';
+import { ProgrammingLanguage } from '../../programmingLanguage.js';
 
 export interface FindProgrammingLanguageByFileExtensionPayload {
   readonly fileExtension: string;

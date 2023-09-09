@@ -1,5 +1,5 @@
-import { ProgrammingLanguage } from '../programmingLanguage.js';
-import { ProgrammingLanguageName } from '../programmingLanguageName.js';
+import { ProgrammingLanguage } from '../../programmingLanguage.js';
+import { ProgrammingLanguageName } from '../../programmingLanguageName.js';
 import {
   FindProgrammingLanguageByFileExtensionPayload,
   ProgrammingLanguageService,

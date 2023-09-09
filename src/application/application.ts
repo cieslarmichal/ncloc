@@ -1,11 +1,11 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { FileSystemServiceImpl } from '../libs/fileSystem/fileSystemServiceImpl.js';
 import { CountLinesOfCodeCommandHandlerImpl } from './commandHandlers/countLinesOfCodeCommandHandler/countLinesOfCodeCommandHandlerImpl.js';
 import Table from 'cli-table';
 import { BaseError } from './errors/baseError.js';
-import { ProgrammingLanguageServiceImpl } from './services/programmingLanguageServiceImpl.js';
 import { FindSupportedProgrammingLanguagesQueryHandlerImpl } from './queryHandlers/findSupportedProgrammingLanguagesQueryHandler/findSupportedProgrammingLanguagesQueryHandlerImpl.js';
+import { FileSystemServiceImpl } from './services/fileSystemService/fileSystemServiceImpl.js';
+import { ProgrammingLanguageServiceImpl } from './services/programmingLanguageService/programmingLanguageServiceImpl.js';
 
 export class Application {
   public start(): void {

@@ -1,5 +1,5 @@
 import { extname, resolve } from 'path';
-import { FileSystemService } from '../../../libs/fileSystem/fileSystemService.js';
+import { FileSystemService } from '../../services/fileSystemService/fileSystemService.js';
 import { ExcludePathNotExistsError } from '../../errors/excludePathNotExistsError.js';
 import { InputPathNotExistsError } from '../../errors/inputPathNotExistsError.js';
 import {
@@ -8,7 +8,7 @@ import {
   CreateAddressCommandHandlerResult,
   ProgrammingLanguageFilesInfo,
 } from './countLinesOfCodeCommandHandler.js';
-import { ProgrammingLanguageService } from '../../services/programmingLanguageService.js';
+import { ProgrammingLanguageService } from '../../services/programmingLanguageService/programmingLanguageService.js';
 import { ProgrammingLanguageName } from '../../programmingLanguageName.js';
 
 export interface ValidateIfPathsExistPayload {

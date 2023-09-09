@@ -1,4 +1,4 @@
-import { ProgrammingLanguageService } from '../../services/programmingLanguageService.js';
+import { ProgrammingLanguageService } from '../../services/programmingLanguageService/programmingLanguageService.js';
 import {
   FindSupportedProgrammingLanguagesQueryHandler,
   FindSupportedProgrammingLanguagesQueryHandlerResult,
